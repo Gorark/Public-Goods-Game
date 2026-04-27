@@ -3,19 +3,19 @@ using TMPro;
 
 public class InvestButton : MonoBehaviour
 {
-    public int money = 100;
+    public int Playermoney = 100;
     public TMP_Text moneyText;
 
     public void Invest()
 {
-    if (money < 10) return;
+    if (Playermoney < 10) return;
 
-    money -= 10;
-    moneyText.text = "Money: " + money;
+    Playermoney -= 10;
+    moneyText.text = "Money: " + Playermoney;
 }
 
     void Start()
     {
-        moneyText.text = "Money: " + money;
+        moneyText.text = "Money: " + Playermoney;
     }
 }
