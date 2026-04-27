@@ -18,6 +18,8 @@ public class GameManager : MonoBehaviour
     int ai1Money = 100;
     int ai2Money = 100;
     int ai3Money = 100;
+    float alpha = 0.3f;
+
 
     void Start()
     {
@@ -87,10 +89,10 @@ public class GameManager : MonoBehaviour
         float multipliedPot = totalInvested * 1.6f;
         float share = multipliedPot / 4f;
 
-        humanMoney = Mathf.RoundToInt(humanMoney - humanInvest + share);
-        ai1Money = Mathf.RoundToInt(ai1Money - ai1Invest + share);
-        ai2Money = Mathf.RoundToInt(ai2Money - ai2Invest + share);
-        ai3Money = Mathf.RoundToInt(ai3Money - ai3Invest + share);
+        humanMoney = Mathf.RoundToInt((humanMoney - humanInvest) + share + alpha * humanInvest);
+        ai1Money = Mathf.RoundToInt((ai1Money - ai1Invest) + share + alpha * ai1Invest);
+        ai2Money = Mathf.RoundToInt((ai2Money - ai2Invest) + share + alpha * ai2Invest);
+        ai3Money = Mathf.RoundToInt((ai3Money - ai3Invest) + share + alpha * ai3Invest);
 
         resultText.text =
         "Last Round Investments:"+
@@ -99,8 +101,10 @@ public class GameManager : MonoBehaviour
             "\nAI 2 invested: " + ai2Invest +
             "\nAI 3 invested: " + ai3Invest +
             "\nTotal pot: " + totalInvested +
-            "\nMultiplied pot: " + multipliedPot +
-            "\nEach receives: " + share;
+            "\nYou receive: " + humanMoney +
+            "\nIA 1 receive: " + ai1Money +
+            "\nIA 2 receive: " + ai2Money +
+            "\nIA 3 receive: " + ai3Money ;
 
         UpdateUI();
     }
