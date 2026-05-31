@@ -35,7 +35,7 @@ module public_goods_game() {
         // niveau 3 de détail: texte sur relief sur la pièce
         if(detail_level >= 3)
 
-            color("black")
+            color("maroon")
             translate([0,0,coin_height])
 
             linear_extrude(height = text_height) {
