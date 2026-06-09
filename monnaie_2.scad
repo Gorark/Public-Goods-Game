@@ -1,17 +1,11 @@
-detail_level = 3;     // 1, 2 ou 3 pour acriver chaque niveau de détail
-
-coin_radius = 30;
-coin_height = 3;
-
-border_thickness = 1.5;
-
-text_size = 8;
-text_height = 0.8;
-
-$fn = 100;
-
-
-module public_goods_game() {
+module public_goods_game(
+    detail_level = 3,  // mettre 1, 2 ou 3 pour voir chaque niveau de détail
+    coin_radius = 30,
+    coin_height = 3,
+    border_thickness = 1.5,
+    text_size = 8,
+    text_height = 0.8) {
+    
 
     union() {
 
@@ -24,11 +18,11 @@ module public_goods_game() {
 
             color("black")
             difference() {
-                cylinder(h = coin_height + 0.01, r = coin_radius);
+                cylinder(h = coin_height + 0.01, r = coin_radius );
 
                 cylinder(
                     h = coin_height + 0.02,
-                    r = coin_radius - border_thickness
+                    r = coin_radius - border_thickness 
                 );
             }
 
@@ -67,4 +61,11 @@ module public_goods_game() {
     }
 }
 
-public_goods_game();
+public_goods_game(
+    detail_level = 3,
+    coin_radius = 30,
+    coin_height = 3,
+    border_thickness = 1.5,
+    text_size = 8,
+    text_height = 0.8
+);
