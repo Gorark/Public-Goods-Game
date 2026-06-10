@@ -69,3 +69,4 @@ public_goods_game(
     text_size = 8,
     text_height = 0.8
 );
+
