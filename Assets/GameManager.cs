@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour
     int ai3Money = 100;
 
     float alpha = 0.6f;
+    float potMultiplier = 1.6f;
 
     public int currentRound = 0;
     public int maxRounds = 5;
@@ -42,6 +43,8 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        ApplySandboxSettings();
+
         ai1Personality = GetRandomPersonality();
         ai2Personality = GetRandomPersonality();
         ai3Personality = GetRandomPersonality();
@@ -107,6 +110,11 @@ public class GameManager : MonoBehaviour
 
     string GetRandomPersonality()
     {
+        if (SandboxMenuManager.sandboxForcedPersonality != SandboxMenuManager.NoForcedPersonality)
+        {
+            return SandboxMenuManager.sandboxForcedPersonality;
+        }
+
         string[] personalities = {
             "Banquier",
             "Gambler",
@@ -162,7 +170,7 @@ public class GameManager : MonoBehaviour
 
         int totalInvested = humanInvest + ai1Invest + ai2Invest + ai3Invest;
 
-        float multipliedPot = totalInvested * 1.6f;
+        float multipliedPot = totalInvested * potMultiplier;
         float share = multipliedPot / 4f;
 
         float humanRatio = humanInvest / Mathf.Max(1f, humanMoney);
@@ -261,6 +269,17 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    void ApplySandboxSettings()
+    {
+        maxRounds = SandboxMenuManager.sandboxMaxRounds;
+        humanMoney = SandboxMenuManager.sandboxHumanStartMoney;
+        ai1Money = SandboxMenuManager.sandboxAIStartMoney;
+        ai2Money = SandboxMenuManager.sandboxAIStartMoney;
+        ai3Money = SandboxMenuManager.sandboxAIStartMoney;
+        potMultiplier = SandboxMenuManager.sandboxPotMultiplier;
+        alpha = SandboxMenuManager.sandboxAlpha;
+    }
+
     void SetupEndGamePopup()
     {
         if (endGamePopup != null)
@@ -302,13 +321,13 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        string winners = "";
+        string winners = string.Empty;
 
         for (int i = 0; i < playerMoney.Length; i++)
         {
             if (playerMoney[i] == highestMoney)
             {
-                if (winners == "")
+                if (string.IsNullOrEmpty(winners))
                 {
                     winners += playerNames[i];
                 }

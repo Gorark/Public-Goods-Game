@@ -5,7 +5,13 @@ public class MenuManager : MonoBehaviour
 {
     public void OpenGame()
     {
+        SandboxMenuManager.ResetSandboxSettings();
         SceneManager.LoadScene("PlayGame");
+    }
+
+    public void OpenSandboxMenu()
+    {
+        SceneManager.LoadScene("MainMenuSandbox");
     }
 
     public void OpenTutorial()
