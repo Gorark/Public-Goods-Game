@@ -1,6 +1,7 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -18,6 +19,12 @@ public class GameManager : MonoBehaviour
 
     float alpha = 0.6f;
 
+    public int currentRound = 0;
+    public int maxRounds = 5;
+    public float adaptationStrength = 0.15f;
+    public float minAdaptationCoefficient = 0.95f;
+    public float maxAdaptationCoefficient = 1.12f;
+
     public TMP_InputField investInput;
     public Slider investSlider;
     public TMP_Text investPreviewText;
@@ -26,6 +33,12 @@ public class GameManager : MonoBehaviour
     public TMP_Text ai2Text;
     public TMP_Text ai3Text;
     public TMP_Text resultText;
+    public TMP_Text roundText;
+    public GameObject endGamePopup;
+    public TMP_Text winnerText;
+    public Button returnToMainMenuButton;
+
+    bool gameEnded = false;
 
     void Start()
     {
@@ -41,6 +54,7 @@ public class GameManager : MonoBehaviour
         {
             investSlider.minValue = 0f;
             investSlider.maxValue = 100f;
+            investSlider.wholeNumbers = true;
             investSlider.onValueChanged.AddListener(UpdateInvestPreview);
             UpdateInvestPreview(investSlider.value);
         }
@@ -50,6 +64,7 @@ public class GameManager : MonoBehaviour
             UpdateInvestPreview(0f);
         }
 
+        SetupEndGamePopup();
         UpdateUI();
     }
 
@@ -126,6 +141,11 @@ public class GameManager : MonoBehaviour
 
     public void PlayRound()
     {
+        if (gameEnded)
+        {
+            return;
+        }
+
         if (investSlider == null)
         {
             Debug.LogWarning("GameManager: cannot play a round because investSlider is not assigned.");
@@ -153,7 +173,13 @@ public class GameManager : MonoBehaviour
         float averageRatio = (humanRatio + ai1Ratio + ai2Ratio + ai3Ratio) / 4f;
         float punishmentThreshold = averageRatio * 0.8f;
 
-        float humanGain = share + alpha * humanInvest;
+        float humanGainBeforeAdaptation = share + alpha * humanInvest;
+        int bestOpponentMoney = Mathf.Max(ai1Money, ai2Money, ai3Money);
+        float adaptationGap = (bestOpponentMoney - humanMoney) / Mathf.Max(1f, bestOpponentMoney);
+        float adaptationCoefficient = 1f + adaptationStrength * adaptationGap;
+        adaptationCoefficient = Mathf.Clamp(adaptationCoefficient, minAdaptationCoefficient, maxAdaptationCoefficient);
+
+        float humanGain = humanGainBeforeAdaptation * adaptationCoefficient;
         float ai1Gain = share + alpha * ai1Invest;
         float ai2Gain = share + alpha * ai2Invest;
         float ai3Gain = share + alpha * ai3Invest;
@@ -169,6 +195,7 @@ public class GameManager : MonoBehaviour
         ai3Money = Mathf.RoundToInt((ai3Money - ai3Invest) + ai3Gain - ai3Punishment);
 
         lastAverage = averageRatio;
+        currentRound++;
 
         if (resultText != null)
         {
@@ -181,7 +208,11 @@ public class GameManager : MonoBehaviour
                 "\nTotal pot: " + totalInvested + " coins" +
                 "\nMultiplied pot: " + FormatCoins(multipliedPot) +
                 "\nShare per player: " + FormatCoins(share) +
-                "\nYou gain: " + FormatCoins(humanGain) +
+                "\nYour base gain: " + FormatCoins(humanGainBeforeAdaptation) +
+                "\nBest opponent money: " + bestOpponentMoney + " coins" +
+                "\nAdaptation gap: " + FormatPercent(adaptationGap) +
+                "\nAdaptation coefficient: " + adaptationCoefficient.ToString("0.00") +
+                "\nYou gain after adaptation: " + FormatCoins(humanGain) +
                 "\nAI 1 gain: " + FormatCoins(ai1Gain) +
                 "\nAI 2 gain: " + FormatCoins(ai2Gain) +
                 "\nAI 3 gain: " + FormatCoins(ai3Gain) +
@@ -195,6 +226,11 @@ public class GameManager : MonoBehaviour
 
         UpdateUI();
         UpdateInvestPreview(investSlider.value);
+
+        if (currentRound >= maxRounds)
+        {
+            EndGame();
+        }
     }
 
     void UpdateUI()
@@ -218,5 +254,100 @@ public class GameManager : MonoBehaviour
         {
             ai3Text.text = "AI 3: " + ai3Money + " coins";
         }
+
+        if (roundText != null)
+        {
+            roundText.text = "Round: " + currentRound + " / " + maxRounds;
+        }
+    }
+
+    void SetupEndGamePopup()
+    {
+        if (endGamePopup != null)
+        {
+            endGamePopup.SetActive(false);
+        }
+
+        if (returnToMainMenuButton != null)
+        {
+            returnToMainMenuButton.onClick.RemoveListener(ReturnToMainMenu);
+            returnToMainMenuButton.onClick.AddListener(ReturnToMainMenu);
+        }
+    }
+
+    void EndGame()
+    {
+        gameEnded = true;
+
+        if (investSlider != null)
+        {
+            investSlider.interactable = false;
+        }
+
+        ShowEndGamePopup(GetWinnerText());
+    }
+
+    string GetWinnerText()
+    {
+        string[] playerNames = { "You", "AI 1", "AI 2", "AI 3" };
+        int[] playerMoney = { humanMoney, ai1Money, ai2Money, ai3Money };
+
+        int highestMoney = playerMoney[0];
+
+        for (int i = 1; i < playerMoney.Length; i++)
+        {
+            if (playerMoney[i] > highestMoney)
+            {
+                highestMoney = playerMoney[i];
+            }
+        }
+
+        string winners = "";
+
+        for (int i = 0; i < playerMoney.Length; i++)
+        {
+            if (playerMoney[i] == highestMoney)
+            {
+                if (winners == "")
+                {
+                    winners += playerNames[i];
+                }
+                else
+                {
+                    winners += ", " + playerNames[i];
+                }
+            }
+        }
+
+        string title;
+
+        if (humanMoney == highestMoney)
+        {
+            title = winners == "You" ? "You won!" : "Tie game!";
+        }
+        else
+        {
+            title = "Game over";
+        }
+
+        return title + "\nWinner: " + winners + "\nMoney: " + highestMoney + " coins";
+    }
+
+    void ShowEndGamePopup(string message)
+    {
+        if (winnerText != null)
+        {
+            winnerText.text = message;
+        }
+
+        if (endGamePopup != null)
+        {
+            endGamePopup.SetActive(true);
+        }
+    }
+
+    public void ReturnToMainMenu()
+    {
+        SceneManager.LoadScene("MainMenu");
     }
 }
