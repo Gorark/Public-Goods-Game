@@ -17,5 +17,16 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/PlayGame.unity
     guid: d6cf2cc36a5b447ad96ffefb0f85847c
+    path: Assets/Scenes/Sandbox.unity
+    guid: 8c9cfa26abfee488c85f1582747f6a02
+  - enabled: 1
+    path: Assets/Scenes/MainMenu.unity
+    guid: 058d071551b2c4c479540f433a7723db
+  - enabled: 1
+    path: Assets/Scenes/PlayGame.unity
+    guid: d6cf2cc36a5b447ad96ffefb0f85847c
+  - enabled: 1
+    path: Assets/Scenes/Tutorial.unity
+    guid: c673df87ee1a44a1c8cda379e1939dd2
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}

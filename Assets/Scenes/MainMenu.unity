@@ -153,8 +153,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 144, y: 110.000046}
-  m_SizeDelta: {x: 1000, y: 250}
+  m_AnchoredPosition: {x: -102.56, y: 44}
+  m_SizeDelta: {x: 961, y: 226}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &62071887
 MonoBehaviour:
@@ -176,17 +176,17 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Public Goods \n       Game"
+  m_text: "Public Goods \nGame"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 5f62dda91126742c689a71d6c6ac2aaf, type: 2}
-  m_sharedMaterial: {fileID: 6794223859777077384, guid: 5f62dda91126742c689a71d6c6ac2aaf, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: dc36b3fdc14f47ebb36fd484a67e268a, type: 2}
+  m_sharedMaterial: {fileID: 2140032, guid: dc36b3fdc14f47ebb36fd484a67e268a, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4292905513
-  m_fontColor: {r: 0.16078433, g: 0.5426626, b: 0.8784314, a: 1}
+    rgba: 4289374720
+  m_fontColor: {r: 0, g: 0.665, b: 0.665, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -210,7 +210,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 1
-  m_HorizontalAlignment: 1
+  m_HorizontalAlignment: 2
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -394,8 +394,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: TUTORIAL
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 5f62dda91126742c689a71d6c6ac2aaf, type: 2}
-  m_sharedMaterial: {fileID: 6794223859777077384, guid: 5f62dda91126742c689a71d6c6ac2aaf, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: c482911c521613546a13c369d4a94d15, type: 2}
+  m_sharedMaterial: {fileID: -2199958784334826471, guid: c482911c521613546a13c369d4a94d15, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -472,50 +472,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 142631610}
   m_CullTransparentMesh: 1
---- !u!1 &293956997
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 293956999}
-  - component: {fileID: 293956998}
-  m_Layer: 0
-  m_Name: MenuManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &293956998
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 293956997}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d27251eac2bbf448887221e4a85d45c7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MenuManager
---- !u!4 &293956999
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 293956997}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 260.5, y: 208.75, z: 278.48438}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &302656050
 GameObject:
   m_ObjectHideFlags: 0
@@ -551,7 +507,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -170}
+  m_AnchoredPosition: {x: 0, y: -252}
   m_SizeDelta: {x: 700, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &302656052
@@ -834,9 +790,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 293956998}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: MenuManager, Assembly-CSharp
-        m_MethodName: PlayGame
+        m_MethodName: OpenGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -943,8 +899,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: PLAY GAME
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 5f62dda91126742c689a71d6c6ac2aaf, type: 2}
-  m_sharedMaterial: {fileID: 6794223859777077384, guid: 5f62dda91126742c689a71d6c6ac2aaf, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: c482911c521613546a13c369d4a94d15, type: 2}
+  m_sharedMaterial: {fileID: -2199958784334826471, guid: c482911c521613546a13c369d4a94d15, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1055,8 +1011,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 145, y: 303}
-  m_SizeDelta: {x: 200, y: 50}
+  m_AnchoredPosition: {x: -754, y: -425}
+  m_SizeDelta: {x: 341.8724, y: 53.5165}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &645989512
 MonoBehaviour:
@@ -1080,8 +1036,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "r\xE9alis\xE9 par: Leonardo Castelli et Mihaela Satcovschi"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 5f62dda91126742c689a71d6c6ac2aaf, type: 2}
-  m_sharedMaterial: {fileID: 6794223859777077384, guid: 5f62dda91126742c689a71d6c6ac2aaf, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1105,13 +1061,13 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 25
-  m_fontSizeBase: 25
+  m_fontSize: 30
+  m_fontSizeBase: 30
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 1
+  m_fontStyle: 0
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 256
   m_textAlignment: 65535
@@ -1144,7 +1100,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: -394.21994, y: 0, z: 0, w: 0}
+  m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -1322,7 +1278,7 @@ Light:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1281274481}
   m_Enabled: 1
-  serializedVersion: 13
+  serializedVersion: 12
   m_Type: 1
   m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
   m_Intensity: 1
@@ -1374,7 +1330,7 @@ Light:
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ForceVisible: 0
-  m_ShapeRadius: 0.025
+  m_ShadowRadius: 0
   m_ShadowAngle: 0
   m_LightUnit: 1
   m_LuxAtDistance: 1
@@ -1506,7 +1462,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 293956998}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: MenuManager, Assembly-CSharp
         m_MethodName: OpenTutorial
         m_Mode: 1
@@ -1653,7 +1609,6 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
-  m_UseReflectionProbes: 0
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
@@ -1665,4 +1620,3 @@ SceneRoots:
   m_Roots:
   - {fileID: 1281274483}
   - {fileID: 327396173}
-  - {fileID: 293956999}
