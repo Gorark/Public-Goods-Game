@@ -3,7 +3,7 @@ using UnityEngine.SceneManagement;
 
 public class MenuManager : MonoBehaviour
 {
-    public void OpenGame()
+    public void PlayGame()
     {
         SceneManager.LoadScene("PlayGame");
     }
@@ -11,5 +11,10 @@ public class MenuManager : MonoBehaviour
     public void OpenTutorial()
     {
         SceneManager.LoadScene("Tutorial");
+    }
+
+    public void QuitGame()
+    {
+        Application.Quit();
     }
 }
