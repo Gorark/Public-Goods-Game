@@ -66,8 +66,7 @@ public class TutorialManager : MonoBehaviour
     "If a player contributed less than 80% of the group average, that player loses half of the gains from that round.",
     "This makes the question harder: should you keep more tokens now, or contribute enough to avoid being punished later? Losing half of your gains is pretty tough.",
     "The goal is not to force generosity. The goal is to show how incentives, equal redistribution, punishment, and shared benefits can change players' behaviours and choices.",
-    "Try to finish the game with more tokens than the other players while understanding why cooperation can be fragile. Good luck, future economist."
->>>>>>> origin/integrate-mia-scenes-and-assets
+    "Try to finish the game with more tokens than the other players while understanding why cooperation can be fragile. Good luck, future economist.",
     };
 
     public void SkipTutorial()
@@ -105,12 +104,7 @@ public class TutorialManager : MonoBehaviour
     ai3AmountText.gameObject.SetActive(false);
     playerAmountText.gameObject.SetActive(false);
 
-    if (stepIndex == 2)
-    {
-        highlight.SetActive(true);
-        highlight.transform.position = new Vector3(1150, 290, -70);
-    }
-    else if (stepIndex == 7)
+    if (stepIndex == 7)
     {
         ai1AmountText.gameObject.SetActive(true);
         ai1AmountText.text = "Given: 70\n Left: 30";
@@ -120,7 +114,7 @@ public class TutorialManager : MonoBehaviour
         ai1AmountText.gameObject.SetActive(true);
         ai1AmountText.text = "Given: 70\n Left: 30";
         highlight.SetActive(true);
-        highlight.transform.position = new Vector3(580, 500, 0);
+        highlight.transform.position = new Vector3(380, 500, 0);
     }
     else if (stepIndex == 9)
     { 
@@ -156,7 +150,7 @@ public class TutorialManager : MonoBehaviour
         ai3AmountText.gameObject.SetActive(true);
         ai3AmountText.text = "Given: 64\n Left: 36";
         highlight.SetActive(true);
-        highlight.transform.position = new Vector3(1400, 450, 0);
+        highlight.transform.position = new Vector3(1500, 450, 0);
         highlight.transform.rotation = Quaternion.Euler(0, 0, 0);
     }
     else if (stepIndex == 14)
@@ -217,22 +211,18 @@ public void PlayTutorialRound()
     int ai2Final = Mathf.RoundToInt((100 - ai2Invest) + share);
     int ai3Final = Mathf.RoundToInt((100 - ai3Invest) + share);
 
-    // Hide investment UI
     investButton.SetActive(false);
     investSliderObject.SetActive(false);
     investPreviewText.SetActive(false);
 
-    // Keep round UI visible
     gameRoundUI.SetActive(true);
 
-    // Show labels above heads
     humanText.SetActive(true);
     ai1Text.SetActive(true);
     ai2Text.SetActive(true);
     ai3Text.SetActive(true);
     roundText.SetActive(true);
 
-    // Show result texts above heads
     playerAmountText.gameObject.SetActive(true);
     ai1AmountText.gameObject.SetActive(true);
     ai2AmountText.gameObject.SetActive(true);
@@ -254,12 +244,10 @@ public void PlayTutorialRound()
         "AI3 received: " + share.ToString("0.0") +
         "\nAmount Now: " + ai3Final;
 
-    // Optional big result text
     resultText.gameObject.SetActive(true);
     resultText.text = "Round complete!";
 }
 
 }
 
-}
 
