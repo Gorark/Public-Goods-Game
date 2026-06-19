@@ -36,38 +36,38 @@ public class TutorialManager : MonoBehaviour
     private string[] tutorialSteps =
     {
         "We are in the city of Carouge. Here, four entrepreneurs have decided to collaborate in order to improve their neighbourhood: Battelle.",
-    "And the first round starts...",
-    "All players start the game with a stack of 100 tokens, but after each round, the stack does not reset to the initial amount.",
-    "The idea behind the tokens is to simulate real life: we all have a certain amount of money that we can choose to invest in a project.",
+    "And the first round starts... but first, here is the idea of the Public Goods Game: each player secretly chooses how many tokens to keep and how many tokens to put into a common pot.",
+    "All players start with 100 tokens. After each round, your new amount becomes your budget for the next round, so decisions can snowball over time.",
+    "The idea behind the tokens is to simulate real life: we all have a limited amount of money, and we can choose to keep it or invest part of it in a project that benefits everyone. No pressure... except the whole group is watching.",
     "                                           ROUND 1!",
-    "The characters in the game, just like in real life, make decisions based on their profiles and personalities.",
-    "There are specific economic profiles involved here.",
+    "The characters in the game, just like in real life, make decisions based on economic profiles: their profile changes how much risk they take and how much they usually contribute.",
+    "This creates the main dilemma of the Public Goods Game: personal interest can conflict with group cooperation.",
     " ",
-    "Character 1: Banker. This character is a risk-taker, meaning they believe that taking risks is an important part of an economic event. They always invest a number between 50 and 70.",
+    "Character 1: Banker. This character is a risk-taker, meaning they believe that taking risks is an important part of an economic event. They always invest a number between 50 and 70% of their total tokens.",
     " ",
-    "Character 2: Fast Food Manager. This character is risk-averse, meaning they are cautious and almost never take big risks. They will always invest the average amount invested in the previous round, if that average is between 20 and 70.",
+    "Character 2: Fast Food Manager. This profile is cautious. It follows the previous average contribution(it invest half of his worth on the first round), while staying between 20 and 70% of their total tokens. Very reasonable. Almost suspiciously reasonable.",
     " ",
-    "Character 3: Gambler. This character loves taking risks and also wants to surprise the other players each round by choosing a totally random number between 0 and 100.",
+    "Character 3: Gambler. This character loves taking risks, wants to surprise the other players each round, and can choose a totally random amount between 0 and 100% % of their total tokens. Nobody knows what will happen, including them.",
     "Now it is your turn!", 
     " ",
     "About the results:",
-    "Once everyone has invested the amount they want, the investment pot is multiplied by a value called M, which is a multiplier.",
-    "The goal of the multiplier is to make the investment process more interesting for the player. Depending on its value, the multiplier can make everyone gain more tokens or lose tokens collectively.",
-    "For example, a multiplier lower than 1 would make every player lose money, no matter how much they contributed to the investment pot.",
-    "Is that why a multiplier equal to 1 would not change the gains once the investment pot is divided? YES. This means that the multiplier has to be higher than 1.00... but which value should it have?",
-    "Let's look at a multiplier of 1.2. Dividing it by 4, the number of players, gives 0.3. This means a loss of 0.7, because 1.00 - 0.3 = 0.7. That is not very balanced.",
-    "The multiplier should be higher than 1.2 then. What about 1.6? Dividing it by 4 gives 0.4, and the loss is 0.6 because 1.00 - 0.4 = 0.6. That is actually an almost equal gain-to-loss ratio!",
-    "Actually, that is the exact multiplier we chose. What a coincidence...",
-    "Another advantage of using a multiplier is that it discourages players from not contributing to the investment pot while still benefiting from the gains. This is called being a free-rider.",
-    "An example of free-riding is a public park: we all enjoy a well-maintained public park, even if we did not personally contribute to the funds used to improve it.",
-    "You could think that this is a method of punishment, but it is not. It only prevents one extreme case from happening: someone contributing nothing to the investment pot.",
+    "Once everyone has chosen an amount, all contributions are added into the common pot.",
+    "The pot is then multiplied by M = 1.6. This creates a public benefit: together, the group creates more value than the raw amount that was invested.",
+    "However, the multiplied pot is divided equally between all four players, even if someone contributed very little. Yes, this is where the suspicious smiles begin.",
+    "That is why the game creates a dilemma. Contributing helps the group, but keeping tokens can be tempting for an individual player.",
+    "If the multiplier were too low, contributing would feel useless, because the common pot would not create enough value.",
+    "If the multiplier were too high, contributing everything would become too obvious, and the dilemma would disappear.",
+    "With four players and M = 1.6, the shared return is useful, but not automatic. You still have to think about how much to invest.",
+    "A player who benefits from the pot while contributing little is called a free-rider. Nice for them, annoying for literally everyone else.",
+    "For example, imagine a public park: everyone can enjoy it, even people who did not help pay for its maintenance.",
+    "If free-riding is always the best strategy, cooperation collapses. The game therefore includes a punishment rule, becauseeach society needs rules to function.",
     "Oh? What is the game's method of punishment? Well, now that you asked...",
-    "The game is designed so that all characters place their funds in the pot before the player. This means the player cannot analyse the amounts played in the current round, only the amounts played in the previous round.",
-    "Because of this principle, a player's actions in the current round will determine the level of punishment or help they receive in the future round.",
-    "The formula we created only punishes players who invest less than 80% of the average amount invested in one round. Their gains will be cut in half. Pretty tough!",
-    "The purpose of the game and its rules is to encourage equality between the characters, based on two principles: 1) dividing the investment pot into four equal amounts, and 2) punishing players who contribute much less in order to keep more tokens for themselves.",
-    "The game aims to make you play correctly and be fair with the other players.",
-    "It is as if the rules put in place for a game directly impact the players' behaviours and choices... Interesting."
+    "After a round, the game compares each player's contribution rate with the group average contribution rate.",
+    "If a player contributed less than 80% of the group average, that player loses half of the gains from that round.",
+    "This makes the question harder: should you keep more tokens now, or contribute enough to avoid being punished later? Losing half of your gains is pretty tough.",
+    "The goal is not to force generosity. The goal is to show how incentives, equal redistribution, punishment, and shared benefits can change players' behaviours and choices.",
+    "Try to finish the game with more tokens than the other players while understanding why cooperation can be fragile. Good luck, future economist."
+>>>>>>> origin/integrate-mia-scenes-and-assets
     };
 
     public void SkipTutorial()
@@ -258,4 +258,8 @@ public void PlayTutorialRound()
     resultText.gameObject.SetActive(true);
     resultText.text = "Round complete!";
 }
+
 }
+
+}
+

@@ -250,23 +250,33 @@ public class GameManager : MonoBehaviour
 
         if (ai1Text != null)
         {
-            ai1Text.text = "AI 1: " + ai1Money + " coins";
+            ai1Text.text = GetAIText("AI 1", ai1Personality, ai1Money);
         }
 
         if (ai2Text != null)
         {
-            ai2Text.text = "AI 2: " + ai2Money + " coins";
+            ai2Text.text = GetAIText("AI 2", ai2Personality, ai2Money);
         }
 
         if (ai3Text != null)
         {
-            ai3Text.text = "AI 3: " + ai3Money + " coins";
+            ai3Text.text = GetAIText("AI 3", ai3Personality, ai3Money);
         }
 
         if (roundText != null)
         {
             roundText.text = "Round: " + currentRound + " / " + maxRounds;
         }
+    }
+
+    string GetAIText(string aiName, string personality, int money)
+    {
+        if (SandboxMenuManager.sandboxShowAIPersonalities)
+        {
+            return personality + ": " + money + " coins";
+        }
+
+        return aiName + ": " + money + " coins";
     }
 
     void ApplySandboxSettings()
