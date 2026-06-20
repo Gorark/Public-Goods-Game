@@ -3,12 +3,6 @@ using UnityEngine.SceneManagement;
 
 public class MenuManager : MonoBehaviour
 {
-    public void PlayGame()
-    {
-        SandboxMenuManager.ResetSandboxSettings();
-        SceneManager.LoadScene("PlayGame");
-    }
-
     public void OpenSandboxMenu()
     {
         SceneManager.LoadScene("MainMenuSandbox");
@@ -17,10 +11,5 @@ public class MenuManager : MonoBehaviour
     public void OpenTutorial()
     {
         SceneManager.LoadScene("Tutorial");
-    }
-
-    public void QuitGame()
-    {
-        Application.Quit();
     }
 }

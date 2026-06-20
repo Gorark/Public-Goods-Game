@@ -36,7 +36,7 @@ public class TutorialManager : MonoBehaviour
     private string[] tutorialSteps =
     {
         "We are in the city of Carouge. Here, four entrepreneurs have decided to collaborate in order to improve their neighbourhood: Battelle.",
-    "And the first round starts... but first, here is the idea of the Public Goods Game: each player secretly chooses how many tokens to keep and how many tokens to put into a common pot.",
+    "And the first round starts... but first, welcome to an edited version of the Public Goods Game: each player secretly chooses how many tokens to keep and how many tokens to put into a common pot.",
     "All players start with 100 tokens. After each round, your new amount becomes your budget for the next round, so decisions can snowball over time.",
     "The idea behind the tokens is to simulate real life: we all have a limited amount of money, and we can choose to keep it or invest part of it in a project that benefits everyone. No pressure... except the whole group is watching.",
     "                                           ROUND 1!",
@@ -45,9 +45,9 @@ public class TutorialManager : MonoBehaviour
     " ",
     "Character 1: Banker. This character is a risk-taker, meaning they believe that taking risks is an important part of an economic event. They always invest a number between 50 and 70% of their total tokens.",
     " ",
-    "Character 2: Fast Food Manager. This profile is cautious. It follows the previous average contribution(it invest half of his worth on the first round), while staying between 20 and 70% of their total tokens. Very reasonable. Almost suspiciously reasonable.",
+    "Character 2: Fast Food Manager. This profile is cautious. It follows the previous average contribution (it invests half of its tokens in the first round), while staying between 20 and 70% of its total tokens. Very reasonable. Almost suspiciously reasonable.",
     " ",
-    "Character 3: Gambler. This character loves taking risks, wants to surprise the other players each round, and can choose a totally random amount between 0 and 100% % of their total tokens. Nobody knows what will happen, including them.",
+    "Character 3: Gambler. This character loves taking risks, wants to surprise the other players each round, and can choose a totally random amount between 0 and 100% of their total tokens. Nobody knows what will happen, including them.",
     "Now it is your turn!", 
     " ",
     "About the results:",
@@ -60,13 +60,15 @@ public class TutorialManager : MonoBehaviour
     "With four players and M = 1.6, the shared return is useful, but not automatic. You still have to think about how much to invest.",
     "A player who benefits from the pot while contributing little is called a free-rider. Nice for them, annoying for literally everyone else.",
     "For example, imagine a public park: everyone can enjoy it, even people who did not help pay for its maintenance.",
-    "If free-riding is always the best strategy, cooperation collapses. The game therefore includes a punishment rule, becauseeach society needs rules to function.",
+    "If keeping everything is always the best strategy, cooperation collapses. The game therefore includes a punishment rule, because each society needs rules to function.",
     "Oh? What is the game's method of punishment? Well, now that you asked...",
     "After a round, the game compares each player's contribution rate with the group average contribution rate.",
     "If a player contributed less than 80% of the group average, that player loses half of the gains from that round.",
     "This makes the question harder: should you keep more tokens now, or contribute enough to avoid being punished later? Losing half of your gains is pretty tough.",
+    "There is also a small 0.6 coefficient that multiplies the individual gain from your own contribution. Its exact impact on your final earnings is not immediately obvious.",
+    "This makes the optimal investment even less obvious. You may think: investing nothing is best, but then you risk punishment; investing slightly more may avoid it, but is saving coins for yourself really better than the individual contribution bonus and the return from the common pot?",
     "The goal is not to force generosity. The goal is to show how incentives, equal redistribution, punishment, and shared benefits can change players' behaviours and choices.",
-    "Try to finish the game with more tokens than the other players while understanding why cooperation can be fragile. Good luck, future economist.",
+    "Try to finish with more tokens than the other players while observing how your contributions affect cooperation and punishment. Good luck, future economist.",
     };
 
     public void SkipTutorial()

@@ -1,9 +1,0 @@
-.gitignore
-Library/
-Temp/
-Obj/
-Build/
-Logs/
-.vs/
-.idea/
-MemoryCaptures/

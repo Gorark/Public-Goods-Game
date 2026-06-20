@@ -19,6 +19,17 @@ public class GameManager : MonoBehaviour
 
     float alpha = 0.6f;
     float potMultiplier = 1.6f;
+    bool punishmentEnabled = true;
+
+    float lastAI1Ratio = -1f;
+    float lastAI2Ratio = -1f;
+    float lastAI3Ratio = -1f;
+    float lastAI1Punishment;
+    float lastAI2Punishment;
+    float lastAI3Punishment;
+    float totalHumanContributionRatio;
+    float totalGroupContributionRatio;
+    int humanPunishmentCount;
 
     public int currentRound = 0;
     public int maxRounds = 5;
@@ -26,7 +37,6 @@ public class GameManager : MonoBehaviour
     public float minAdaptationCoefficient = 0.95f;
     public float maxAdaptationCoefficient = 1.12f;
 
-    public TMP_InputField investInput;
     public Slider investSlider;
     public TMP_Text investPreviewText;
     public TMP_Text humanText;
@@ -48,6 +58,11 @@ public class GameManager : MonoBehaviour
         ai1Personality = GetRandomPersonality();
         ai2Personality = GetRandomPersonality();
         ai3Personality = GetRandomPersonality();
+
+        if (SandboxMenuManager.sandboxIncludeFreeRider)
+        {
+            ai1Personality = "FreeRider";
+        }
 
         Debug.Log("AI 1 = " + ai1Personality);
         Debug.Log("AI 2 = " + ai2Personality);
@@ -80,16 +95,14 @@ public class GameManager : MonoBehaviour
 
         float ratio = 0f;
 
-        if (type == "Banquier")
+        if (type == "Banker")
         {ratio = Random.Range(0.5f, 0.7f);}
         else if (type == "Gambler")
         {ratio = Random.Range(0f, 1f);}
-        else if (type == "Patron")
-        {ratio = Random.Range(0.25f, 0.45f);}
         else if (type == "FastFoodManager")
         {ratio = Mathf.Clamp(lastAverage, 0.2f, 0.7f);}
         else if (type == "FreeRider")
-        {ratio = Random.Range(0.2f, 0.3f);}
+        {ratio = 0f;}
 
         int investment = Mathf.RoundToInt(currentMoney * ratio);
         return Mathf.Clamp(investment, 0, currentMoney);
@@ -116,11 +129,9 @@ public class GameManager : MonoBehaviour
         }
 
         string[] personalities = {
-            "Banquier",
+            "Banker",
             "Gambler",
-            "Patron",
-            "FastFoodManager",
-            "FreeRider"
+            "FastFoodManager"
         };
 
         int randomIndex = Random.Range(0, personalities.Length);
@@ -179,7 +190,12 @@ public class GameManager : MonoBehaviour
         float ai3Ratio = ai3Invest / Mathf.Max(1f, ai3Money);
 
         float averageRatio = (humanRatio + ai1Ratio + ai2Ratio + ai3Ratio) / 4f;
-        float punishmentThreshold = averageRatio * 0.8f;
+        float punishmentThreshold = 0f;
+
+        if (punishmentEnabled)
+        {
+            punishmentThreshold = averageRatio * 0.8f;
+        }
 
         float humanGainBeforeAdaptation = share + alpha * humanInvest;
         int bestOpponentMoney = Mathf.Max(ai1Money, ai2Money, ai3Money);
@@ -192,10 +208,26 @@ public class GameManager : MonoBehaviour
         float ai2Gain = share + alpha * ai2Invest;
         float ai3Gain = share + alpha * ai3Invest;
 
-        float humanPunishment = GetPunishment(humanRatio, punishmentThreshold, humanGain);
-        float ai1Punishment = GetPunishment(ai1Ratio, punishmentThreshold, ai1Gain);
-        float ai2Punishment = GetPunishment(ai2Ratio, punishmentThreshold, ai2Gain);
-        float ai3Punishment = GetPunishment(ai3Ratio, punishmentThreshold, ai3Gain);
+        float humanPunishment = 0f;
+        float ai1Punishment = 0f;
+        float ai2Punishment = 0f;
+        float ai3Punishment = 0f;
+
+        if (punishmentEnabled)
+        {
+            humanPunishment = GetPunishment(humanRatio, punishmentThreshold, humanGain);
+            ai1Punishment = GetPunishment(ai1Ratio, punishmentThreshold, ai1Gain);
+            ai2Punishment = GetPunishment(ai2Ratio, punishmentThreshold, ai2Gain);
+            ai3Punishment = GetPunishment(ai3Ratio, punishmentThreshold, ai3Gain);
+        }
+
+        totalHumanContributionRatio += humanRatio;
+        totalGroupContributionRatio += averageRatio;
+
+        if (humanPunishment > 0f)
+        {
+            humanPunishmentCount++;
+        }
 
         humanMoney = Mathf.RoundToInt((humanMoney - humanInvest) + humanGain - humanPunishment);
         ai1Money = Mathf.RoundToInt((ai1Money - ai1Invest) + ai1Gain - ai1Punishment);
@@ -203,33 +235,30 @@ public class GameManager : MonoBehaviour
         ai3Money = Mathf.RoundToInt((ai3Money - ai3Invest) + ai3Gain - ai3Punishment);
 
         lastAverage = averageRatio;
+        lastAI1Ratio = ai1Ratio;
+        lastAI2Ratio = ai2Ratio;
+        lastAI3Ratio = ai3Ratio;
+        lastAI1Punishment = ai1Punishment;
+        lastAI2Punishment = ai2Punishment;
+        lastAI3Punishment = ai3Punishment;
         currentRound++;
 
         if (resultText != null)
         {
+            string punishmentResult = "Punishment: disabled";
+
+            if (punishmentEnabled)
+            {
+                punishmentResult =
+                    "Punishment threshold: " + FormatPercent(punishmentThreshold) +
+                    "\nYour punishment: " + FormatCoins(humanPunishment);
+            }
+
             resultText.text =
-                "Last Round Investments:" +
-                "\nYou invested: " + humanInvest + " coins (" + FormatPercent(humanRatio) + ")" +
-                "\nAI 1 invested: " + ai1Invest + " coins (" + FormatPercent(ai1Ratio) + ")" +
-                "\nAI 2 invested: " + ai2Invest + " coins (" + FormatPercent(ai2Ratio) + ")" +
-                "\nAI 3 invested: " + ai3Invest + " coins (" + FormatPercent(ai3Ratio) + ")" +
-                "\nTotal pot: " + totalInvested + " coins" +
-                "\nMultiplied pot: " + FormatCoins(multipliedPot) +
-                "\nShare per player: " + FormatCoins(share) +
-                "\nYour base gain: " + FormatCoins(humanGainBeforeAdaptation) +
-                "\nBest opponent money: " + bestOpponentMoney + " coins" +
-                "\nAdaptation gap: " + FormatPercent(adaptationGap) +
-                "\nAdaptation coefficient: " + adaptationCoefficient.ToString("0.00") +
-                "\nYou gain after adaptation: " + FormatCoins(humanGain) +
-                "\nAI 1 gain: " + FormatCoins(ai1Gain) +
-                "\nAI 2 gain: " + FormatCoins(ai2Gain) +
-                "\nAI 3 gain: " + FormatCoins(ai3Gain) +
-                "\nAverage contribution: " + FormatPercent(averageRatio) +
-                "\nPunishment threshold: " + FormatPercent(punishmentThreshold) +
-                "\nYour punishment: " + FormatCoins(humanPunishment) +
-                "\nAI 1 punishment: " + FormatCoins(ai1Punishment) +
-                "\nAI 2 punishment: " + FormatCoins(ai2Punishment) +
-                "\nAI 3 punishment: " + FormatCoins(ai3Punishment);
+                "Group average: " + FormatPercent(averageRatio) +
+                "\nYour contribution: " + FormatPercent(humanRatio) +
+                "\nYour gain: " + FormatCoins(humanGain) +
+                "\n" + punishmentResult;
         }
 
         UpdateUI();
@@ -243,24 +272,33 @@ public class GameManager : MonoBehaviour
 
     void UpdateUI()
     {
-        if (humanText != null)
+        string[] names = { "You", GetAIName("AI 1", ai1Personality), GetAIName("AI 2", ai2Personality), GetAIName("AI 3", ai3Personality) };
+        int[] moneyValues = { humanMoney, ai1Money, ai2Money, ai3Money };
+        float[] contributionRatios = { -1f, lastAI1Ratio, lastAI2Ratio, lastAI3Ratio };
+        float[] punishments = { 0f, lastAI1Punishment, lastAI2Punishment, lastAI3Punishment };
+
+        for (int i = 0; i < moneyValues.Length - 1; i++)
         {
-            humanText.text = "You: " + humanMoney + " coins";
+            for (int j = i + 1; j < moneyValues.Length; j++)
+            {
+                if (moneyValues[j] > moneyValues[i])
+                {
+                    Swap(names, i, j);
+                    Swap(moneyValues, i, j);
+                    Swap(contributionRatios, i, j);
+                    Swap(punishments, i, j);
+                }
+            }
         }
 
-        if (ai1Text != null)
-        {
-            ai1Text.text = GetAIText("AI 1", ai1Personality, ai1Money);
-        }
+        TMP_Text[] rankingTexts = { humanText, ai1Text, ai2Text, ai3Text };
 
-        if (ai2Text != null)
+        for (int i = 0; i < rankingTexts.Length; i++)
         {
-            ai2Text.text = GetAIText("AI 2", ai2Personality, ai2Money);
-        }
-
-        if (ai3Text != null)
-        {
-            ai3Text.text = GetAIText("AI 3", ai3Personality, ai3Money);
+            if (rankingTexts[i] != null)
+            {
+                rankingTexts[i].text = GetRankingLine(i + 1, names[i], moneyValues[i], contributionRatios[i], punishments[i]);
+            }
         }
 
         if (roundText != null)
@@ -269,14 +307,48 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    string GetAIText(string aiName, string personality, int money)
+    string GetAIName(string aiName, string personality)
     {
         if (SandboxMenuManager.sandboxShowAIPersonalities)
         {
-            return personality + ": " + money + " coins";
+            return GetDisplayPersonalityName(personality);
         }
 
-        return aiName + ": " + money + " coins";
+        return aiName;
+    }
+
+    string GetDisplayPersonalityName(string personality)
+    {
+        if (personality == "FreeRider")
+        {
+            return "Free Rider";
+        }
+
+        return personality;
+    }
+
+    string GetRankingLine(int rank, string playerName, int money, float contributionRatio, float punishment)
+    {
+        string text = rank + ". " + playerName + ": " + money + " coins";
+
+        if (contributionRatio >= 0f)
+        {
+            text += "\nInvested: " + FormatPercent(contributionRatio);
+
+            if (punishment > 0f)
+            {
+                text += " | Punished: " + FormatCoins(punishment);
+            }
+        }
+
+        return text;
+    }
+
+    void Swap<T>(T[] values, int firstIndex, int secondIndex)
+    {
+        T temporaryValue = values[firstIndex];
+        values[firstIndex] = values[secondIndex];
+        values[secondIndex] = temporaryValue;
     }
 
     void ApplySandboxSettings()
@@ -288,6 +360,7 @@ public class GameManager : MonoBehaviour
         ai3Money = SandboxMenuManager.sandboxAIStartMoney;
         potMultiplier = SandboxMenuManager.sandboxPotMultiplier;
         alpha = SandboxMenuManager.sandboxAlpha;
+        punishmentEnabled = SandboxMenuManager.sandboxPunishmentEnabled;
     }
 
     void SetupEndGamePopup()
@@ -318,7 +391,12 @@ public class GameManager : MonoBehaviour
 
     string GetWinnerText()
     {
-        string[] playerNames = { "You", "AI 1", "AI 2", "AI 3" };
+        string[] playerNames = {
+            "You",
+            GetAIName("AI 1", ai1Personality),
+            GetAIName("AI 2", ai2Personality),
+            GetAIName("AI 3", ai3Personality)
+        };
         int[] playerMoney = { humanMoney, ai1Money, ai2Money, ai3Money };
 
         int highestMoney = playerMoney[0];
@@ -366,13 +444,74 @@ public class GameManager : MonoBehaviour
     {
         if (winnerText != null)
         {
-            winnerText.text = message;
+            float averageHumanContribution = totalHumanContributionRatio / Mathf.Max(1, currentRound);
+            float averageGroupContribution = totalGroupContributionRatio / Mathf.Max(1, currentRound);
+            int totalGroupMoney = humanMoney + ai1Money + ai2Money + ai3Money;
+            int fullCooperationBenchmark = GetFullCooperationBenchmark();
+            float benchmarkReached = totalGroupMoney / Mathf.Max(1f, fullCooperationBenchmark);
+            float distanceFromCollectiveOptimum = Mathf.Max(0f, 1f - benchmarkReached);
+            int richestPlayerMoney = Mathf.Max(humanMoney, ai1Money, ai2Money, ai3Money);
+            int poorestPlayerMoney = Mathf.Min(humanMoney, ai1Money, ai2Money, ai3Money);
+            int wealthGap = richestPlayerMoney - poorestPlayerMoney;
+            string cooperationLevel = "Medium";
+
+            if (averageGroupContribution < 0.33f)
+            {
+                cooperationLevel = "Low";
+            }
+            else if (averageGroupContribution >= 0.66f)
+            {
+                cooperationLevel = "High";
+            }
+
+            winnerText.text =
+                message +
+                "\n\nLEARNING SUMMARY" +
+                "\nYour average contribution: " + FormatPercent(averageHumanContribution) +
+                "\nTimes punished: " + humanPunishmentCount +
+                "\nGroup cooperation: " + cooperationLevel + " (" + FormatPercent(averageGroupContribution) + ")" +
+                "\n\nCOLLECTIVE OUTCOME" +
+                "\nGroup wealth: " + totalGroupMoney + " / " + fullCooperationBenchmark + " benchmark coins" +
+                "\nDistance from collective optimum: " + FormatPercent(distanceFromCollectiveOptimum) +
+                "\nHow to reach it: everyone invests more. Yes, that is basically it." +
+                "\nWealth gap: " + wealthGap + " coins" +
+                "\nIndividual success and collective success are not always the same.";
+
+            if (!string.IsNullOrEmpty(SandboxMenuManager.sandboxLesson))
+            {
+                winnerText.text += "\n\nLESSON TO TAKE AWAY\n" + SandboxMenuManager.sandboxLesson;
+            }
         }
 
         if (endGamePopup != null)
         {
             endGamePopup.SetActive(true);
         }
+    }
+
+    int GetFullCooperationBenchmark()
+    {
+        int benchmarkHumanMoney = SandboxMenuManager.sandboxHumanStartMoney;
+        int benchmarkAI1Money = SandboxMenuManager.sandboxAIStartMoney;
+        int benchmarkAI2Money = SandboxMenuManager.sandboxAIStartMoney;
+        int benchmarkAI3Money = SandboxMenuManager.sandboxAIStartMoney;
+
+        for (int round = 0; round < maxRounds; round++)
+        {
+            int totalInvestment = benchmarkHumanMoney + benchmarkAI1Money + benchmarkAI2Money + benchmarkAI3Money;
+            float sharedReturn = totalInvestment * potMultiplier / 4f;
+            int bestOpponentMoney = Mathf.Max(benchmarkAI1Money, benchmarkAI2Money, benchmarkAI3Money);
+            float adaptationGap = (bestOpponentMoney - benchmarkHumanMoney) / Mathf.Max(1f, bestOpponentMoney);
+            float adaptationCoefficient = 1f + adaptationStrength * adaptationGap;
+            adaptationCoefficient = Mathf.Clamp(adaptationCoefficient, minAdaptationCoefficient, maxAdaptationCoefficient);
+
+            benchmarkHumanMoney = Mathf.RoundToInt((sharedReturn + alpha * benchmarkHumanMoney) * adaptationCoefficient);
+            benchmarkAI1Money = Mathf.RoundToInt(sharedReturn + alpha * benchmarkAI1Money);
+            benchmarkAI2Money = Mathf.RoundToInt(sharedReturn + alpha * benchmarkAI2Money);
+            benchmarkAI3Money = Mathf.RoundToInt(sharedReturn + alpha * benchmarkAI3Money);
+        }
+
+        return benchmarkHumanMoney + benchmarkAI1Money + benchmarkAI2Money + benchmarkAI3Money;
     }
 
     public void ReturnToMainMenu()
