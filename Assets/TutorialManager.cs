@@ -244,10 +244,10 @@ public void PlayTutorialRound()
     float ai2Gain = (multiplier * totalInvested) / 4f + alpha * ai2Invest;
     float ai3Gain = (multiplier * totalInvested) / 4f + alpha * ai3Invest;
 
-    int playerGainRounded = Mathf.CeilToInt(playerGain);
-    int ai1GainRounded = Mathf.CeilToInt(ai1Gain);
-    int ai2GainRounded = Mathf.CeilToInt(ai2Gain);
-    int ai3GainRounded = Mathf.CeilToInt(ai3Gain);
+    int playerGainRounded = Mathf.RoundToInt(playerGain);
+    int ai1GainRounded = Mathf.RoundToInt(ai1Gain);
+    int ai2GainRounded = Mathf.RoundToInt(ai2Gain);
+    int ai3GainRounded = Mathf.RoundToInt(ai3Gain);
 
     int playerFinal = (100 - playerInvest) + playerGainRounded;
     int ai1Final = (100 - ai1Invest) + ai1GainRounded;

@@ -1062,7 +1062,7 @@ AudioSource:
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -1174,6 +1174,14 @@ PrefabInstance:
     - target: {fileID: 423412198025374774, guid: b7757c7044c2841db84858071dddc957, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
+      objectReference: {fileID: 2099928213}
+    - target: {fileID: 423412198025374774, guid: b7757c7044c2841db84858071dddc957, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: TutorialManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 423412198025374774, guid: b7757c7044c2841db84858071dddc957, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SkipTutorial
       objectReference: {fileID: 0}
     - target: {fileID: 717638479163058424, guid: b7757c7044c2841db84858071dddc957, type: 3}
       propertyPath: m_text
