@@ -21,7 +21,7 @@ public class TutorialManager : MonoBehaviour
 
     public GameObject investButton;
     public GameObject investSliderObject;
-    public GameObject investPreviewText;
+    public TMP_Text investPreviewText;
 
     public GameObject humanText;
     public GameObject ai1Text;
@@ -78,7 +78,27 @@ public class TutorialManager : MonoBehaviour
 
     void Start()
     {
+        if (investSlider != null)
+            {
+                investSlider.onValueChanged.AddListener(UpdateInvestPreview);
+            }
+
+        if (investPreviewText != null)
+            {
+                investPreviewText.text = "0% = 0 coins";
+            }
+
         ShowStep();
+    }
+
+    void UpdateInvestPreview(float sliderValue)
+    {
+        if (investPreviewText == null)
+            return;
+
+        int percent = Mathf.Clamp(Mathf.RoundToInt(sliderValue), 0, 100);
+        int moneyAmount = percent;
+        investPreviewText.text = percent + "% = " + moneyAmount + " coins";
     }
 
     public void NextStep()
@@ -105,6 +125,10 @@ public class TutorialManager : MonoBehaviour
     ai2AmountText.gameObject.SetActive(false);
     ai3AmountText.gameObject.SetActive(false);
     playerAmountText.gameObject.SetActive(false);
+    if (investPreviewText != null)
+        investPreviewText.gameObject.SetActive(false);
+    if (resultText != null)
+        resultText.gameObject.SetActive(false);
 
     if (stepIndex == 7)
     {
@@ -123,14 +147,14 @@ public class TutorialManager : MonoBehaviour
         ai1AmountText.gameObject.SetActive(true);
         ai1AmountText.text = "Given: 70\n Left: 30";
         ai2AmountText.gameObject.SetActive(true);
-        ai2AmountText.text = "Given: 10\n Left: 90";
+        ai2AmountText.text = "Given: 50\n Left: 50";
     }
     else if (stepIndex == 10)
     {
         ai1AmountText.gameObject.SetActive(true);
         ai1AmountText.text = "Given: 70\n Left: 30";
         ai2AmountText.gameObject.SetActive(true);
-        ai2AmountText.text = "Given: 10\n Left: 90";
+        ai2AmountText.text = "Given: 50\n Left: 50";
         highlight.SetActive(true);
         highlight.transform.position = new Vector3(1150, 520, 0);
     }
@@ -139,7 +163,7 @@ public class TutorialManager : MonoBehaviour
         ai1AmountText.gameObject.SetActive(true);
         ai1AmountText.text = "Given: 70\n Left: 30";
         ai2AmountText.gameObject.SetActive(true);
-        ai2AmountText.text = "Given: 10\n Left: 90";
+        ai2AmountText.text = "Given: 50\n Left: 50";
         ai3AmountText.gameObject.SetActive(true);
         ai3AmountText.text = "Given: 64\n Left: 36";
     }
@@ -148,7 +172,7 @@ public class TutorialManager : MonoBehaviour
         ai1AmountText.gameObject.SetActive(true);
         ai1AmountText.text = "Given: 70\n Left: 30";
         ai2AmountText.gameObject.SetActive(true);
-        ai2AmountText.text = "Given: 10\n Left: 90";
+        ai2AmountText.text = "Given: 50\n Left: 50";
         ai3AmountText.gameObject.SetActive(true);
         ai3AmountText.text = "Given: 64\n Left: 36";
         highlight.SetActive(true);
@@ -160,7 +184,12 @@ public class TutorialManager : MonoBehaviour
         gameRoundUI.SetActive(true);
         investButton.SetActive(true);
         investSliderObject.SetActive(true);
-        investPreviewText.SetActive(true);
+
+        if (investPreviewText != null)
+        {
+            investPreviewText.gameObject.SetActive(true);
+            UpdateInvestPreview(investSlider.value);
+        }
 
         humanText.SetActive(true);
         ai1Text.SetActive(true);
@@ -186,7 +215,8 @@ public class TutorialManager : MonoBehaviour
         gameRoundUI.SetActive(false);
         investButton.SetActive(false);
         investSliderObject.SetActive(false);
-        investPreviewText.SetActive(false);
+        if (investPreviewText != null)
+            investPreviewText.gameObject.SetActive(false);
 
         humanText.SetActive(false);
         ai1Text.SetActive(false);
@@ -199,23 +229,35 @@ public class TutorialManager : MonoBehaviour
 public void PlayTutorialRound()
 {
     int ai1Invest = 70;
-    int ai2Invest = 10;
+    int ai2Invest = 50;
     int ai3Invest = 64;
+
+    float multiplier = 1.6f;
+    float alpha = 0.6f;
 
     int playerInvest = Mathf.RoundToInt(investSlider.value);
 
     int totalInvested = playerInvest + ai1Invest + ai2Invest + ai3Invest;
-    float multipliedPot = totalInvested * 1.6f;
-    float share = multipliedPot / 4f;
 
-    int playerFinal = Mathf.RoundToInt((100 - playerInvest) + share);
-    int ai1Final = Mathf.RoundToInt((100 - ai1Invest) + share);
-    int ai2Final = Mathf.RoundToInt((100 - ai2Invest) + share);
-    int ai3Final = Mathf.RoundToInt((100 - ai3Invest) + share);
+    float playerGain = (multiplier * totalInvested) / 4f + alpha * playerInvest;
+    float ai1Gain = (multiplier * totalInvested) / 4f + alpha * ai1Invest;
+    float ai2Gain = (multiplier * totalInvested) / 4f + alpha * ai2Invest;
+    float ai3Gain = (multiplier * totalInvested) / 4f + alpha * ai3Invest;
+
+    int playerGainRounded = Mathf.CeilToInt(playerGain);
+    int ai1GainRounded = Mathf.CeilToInt(ai1Gain);
+    int ai2GainRounded = Mathf.CeilToInt(ai2Gain);
+    int ai3GainRounded = Mathf.CeilToInt(ai3Gain);
+
+    int playerFinal = (100 - playerInvest) + playerGainRounded;
+    int ai1Final = (100 - ai1Invest) + ai1GainRounded;
+    int ai2Final = (100 - ai2Invest) + ai2GainRounded;
+    int ai3Final = (100 - ai3Invest) + ai3GainRounded;
 
     investButton.SetActive(false);
     investSliderObject.SetActive(false);
-    investPreviewText.SetActive(false);
+        if (investPreviewText != null)
+    investPreviewText.gameObject.SetActive(false);
 
     gameRoundUI.SetActive(true);
 
@@ -231,19 +273,19 @@ public void PlayTutorialRound()
     ai3AmountText.gameObject.SetActive(true);
 
     playerAmountText.text =
-        "You received: " + share.ToString("0.0") +
+        "You received: " + playerGainRounded +
         "\nAmount Now: " + playerFinal;
 
     ai1AmountText.text =
-        "AI1 received: " + share.ToString("0.0") +
+        "AI1 received: " + ai1GainRounded +
         "\nAmount Now: " + ai1Final;
 
     ai2AmountText.text =
-        "AI2 received: " + share.ToString("0.0") +
+        "AI2 received: " + ai2GainRounded +
         "\nAmount Now: " + ai2Final;
 
     ai3AmountText.text =
-        "AI3 received: " + share.ToString("0.0") +
+        "AI3 received: " + ai3GainRounded +
         "\nAmount Now: " + ai3Final;
 
     resultText.gameObject.SetActive(true);
