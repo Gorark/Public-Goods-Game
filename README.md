@@ -54,3 +54,4 @@ Les scènes incluses dans le build sont :
 - `Assets/SandboxMenuManager.cs` : sélection des modes et popups du menu sandbox.
 - `Assets/TutorialManager.cs` : progression et tour interactif du tutoriel.
 - `Assets/Scenes/` : scènes principales du jeu.
+Mihaela Satcovschi a réalisé la partie 3D ainsi qu'un bout du tutoriel.
